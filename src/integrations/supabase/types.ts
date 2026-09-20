@@ -547,7 +547,7 @@ export type Database = {
         Args: { _target_user_id: string; _user_id: string }
         Returns: boolean
       }
-      seed_default_pipeline: { Args: { p_user_id: string }; Returns: string }
+      seed_default_pipeline: { Args: { p_user_id?: string }; Returns: string }
     }
     Enums: {
       activity_type: "call" | "email" | "meeting" | "note"
