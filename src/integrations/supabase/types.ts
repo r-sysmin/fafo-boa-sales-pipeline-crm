@@ -536,18 +536,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
-      is_team_member: {
-        Args: { _target_user_id: string; _user_id: string }
-        Returns: boolean
-      }
-      seed_default_pipeline: { Args: { p_user_id: string }; Returns: string }
+      seed_default_pipeline: { Args: { p_user_id?: string }; Returns: string }
     }
     Enums: {
       activity_type: "call" | "email" | "meeting" | "note"
