@@ -32,6 +32,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
   const [teamSize, setTeamSize] = useState("");
   const [stages, setStages] = useState(defaultStages);
   const [newStageName, setNewStageName] = useState("");
+  const [loadDemo, setLoadDemo] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   const teamSizes = ["Just me", "2-5", "6-15", "16-50", "50+"];
