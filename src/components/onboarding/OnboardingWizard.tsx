@@ -53,7 +53,10 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
     try {
       // Update profile with company
       if (companyName) {
-        await supabase.from("profiles").update({ company: companyName }).eq("user_id", user.id);
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .upsert({ user_id: user.id, company: companyName }, { onConflict: "user_id" });
+        if (profileError) throw profileError;
       }
 
       // Create pipeline with custom stages

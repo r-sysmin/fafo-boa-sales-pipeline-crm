@@ -6,6 +6,7 @@ export function sanitizeErrorMessage(raw: string): string {
   if (lower.includes("invalid login credentials")) return "Invalid email or password.";
   if (lower.includes("email not confirmed")) return "Please verify your email before signing in.";
   if (lower.includes("user already registered")) return "An account with this email already exists.";
+  if (lower.includes("weak_password") || lower.includes("known to be weak") || lower.includes("pwned")) return "That password is too weak or has appeared in a data breach. Please choose a stronger, unique password.";
   if (lower.includes("password") && lower.includes("leak")) return "This password has been found in a data breach. Please choose a different one.";
   if (lower.includes("rate limit") || lower.includes("too many")) return "Too many attempts. Please wait a moment and try again.";
   if (lower.includes("row-level security")) return "You don't have permission to perform this action.";
