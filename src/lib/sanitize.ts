@@ -25,3 +25,12 @@ export function sanitizeHref(href: string): string {
   }
   return trimmed;
 }
+
+/**
+ * Strips characters that carry special meaning in PostgREST filter expressions
+ * (comma = clause separator, parentheses = grouping, % / _ = LIKE wildcards)
+ * so user search text can never inject extra filter clauses.
+ */
+export function sanitizeSearchTerm(term: string): string {
+  return term.replace(/[,()%\\*"'\\\\]/g, "").trim();
+}
