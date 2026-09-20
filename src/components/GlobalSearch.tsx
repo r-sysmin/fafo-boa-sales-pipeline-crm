@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { sanitizeSearchTerm } from "@/lib/sanitize";
 import {
   CommandDialog,
   CommandInput,
@@ -34,11 +35,12 @@ export function GlobalSearch() {
   }, []);
 
   const search = useCallback(async (term: string) => {
-    if (!term.trim()) {
+    const clean = sanitizeSearchTerm(term);
+    if (!clean) {
       setDeals([]); setContacts([]); setCompanies([]); setActivities([]); setTasks([]);
       return;
     }
-    const pattern = `%${term}%`;
+    const pattern = `%${clean}%`;
     const [d, c, co, a, t] = await Promise.all([
       supabase.from("deals").select("id, title, value").ilike("title", pattern).limit(5),
       supabase.from("contacts").select("id, first_name, last_name, email").or(`first_name.ilike.${pattern},last_name.ilike.${pattern},email.ilike.${pattern}`).limit(5),
