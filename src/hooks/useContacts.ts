@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { sanitizeSearchTerm } from "@/lib/sanitize";
 
 export interface Contact {
   id: string;
@@ -21,8 +22,9 @@ export function useContacts(search?: string) {
     queryKey: ["contacts", search],
     queryFn: async () => {
       let query = supabase.from("contacts").select("*, companies(id, name)").order("created_at", { ascending: false });
-      if (search) {
-        query = query.or(`first_name.ilike.%${search}%,last_name.ilike.%${search}%,email.ilike.%${search}%`);
+      const term = sanitizeSearchTerm(search ?? "");
+      if (term) {
+        query = query.or(`first_name.ilike.%${term}%,last_name.ilike.%${term}%,email.ilike.%${term}%`);
       }
       const { data, error } = await query;
       if (error) throw error;
