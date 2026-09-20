@@ -23,6 +23,7 @@ export default function Settings() {
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
           <TabsTrigger value="templates">Email Templates</TabsTrigger>
           <TabsTrigger value="connectors">Connectors</TabsTrigger>
+          <TabsTrigger value="demo">Demo Data</TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile"><ProfileSettings /></TabsContent>
