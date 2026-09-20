@@ -5,6 +5,7 @@ import { TeamSettings } from "@/components/settings/TeamSettings";
 import { NotificationSettings } from "@/components/settings/NotificationSettings";
 import { EmailTemplateSettings } from "@/components/settings/EmailTemplateSettings";
 import { ConnectorSettings } from "@/components/settings/ConnectorSettings";
+import { DemoDataSettings } from "@/components/settings/DemoDataSettings";
 
 export default function Settings() {
   return (
