@@ -7,7 +7,9 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, ArrowRight, ArrowLeft, Building2, Users, Kanban, Check, Plus, X } from "lucide-react";
+import { Loader2, ArrowRight, ArrowLeft, Building2, Users, Kanban, Check, Plus, X, Sparkles } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { seedDemoWorkspace } from "@/lib/demoData";
 
 interface OnboardingWizardProps {
   onComplete: () => void;
