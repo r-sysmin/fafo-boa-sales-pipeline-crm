@@ -2,6 +2,9 @@ import { defineTool, ToolError } from "@lovable.dev/mcp-js";
 import { z } from "zod";
 import { supabaseForUser } from "../supabase";
 
+const one = <T,>(value: T | T[] | null | undefined): T | null =>
+  Array.isArray(value) ? (value[0] ?? null) : (value ?? null);
+
 export default defineTool({
   name: "list_contacts",
   title: "List contacts",
@@ -36,7 +39,7 @@ export default defineTool({
       phone: c.phone,
       position: c.position,
       company_id: c.company_id,
-      company: c.companies?.name ?? null,
+      company: one(c.companies)?.name ?? null,
     }));
 
     return {
