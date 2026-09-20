@@ -211,6 +211,18 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                   <Plus className="h-4 w-4" />
                 </Button>
               </div>
+
+              <div className="flex items-start gap-3 rounded-xl border bg-muted/40 p-4">
+                <Sparkles className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium">Start with sample data</p>
+                  <p className="text-xs text-muted-foreground">
+                    Adds example companies, contacts and deals so you can explore right away. You can remove it any time
+                    from Settings.
+                  </p>
+                </div>
+                <Switch checked={loadDemo} onCheckedChange={setLoadDemo} aria-label="Start with sample data" />
+              </div>
             </div>
           )}
 
