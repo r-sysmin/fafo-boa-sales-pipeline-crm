@@ -242,7 +242,7 @@ export default function Auth() {
             className="w-full"
             onClick={async () => {
               const { error } = await lovable.auth.signInWithOAuth("google", {
-                redirect_uri: window.location.origin,
+                redirect_uri: returnUrl,
               });
               if (error) {
                 toast({ title: "Error", description: String(error), variant: "destructive" });
