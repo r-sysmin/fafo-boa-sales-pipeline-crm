@@ -32,5 +32,5 @@ export function sanitizeHref(href: string): string {
  * so user search text can never inject extra filter clauses.
  */
 export function sanitizeSearchTerm(term: string): string {
-  return term.replace(/[,()%\\*"'\\\\]/g, "").trim();
+  return term.replace(/[,()%*"'\\]/g, "").trim();
 }
