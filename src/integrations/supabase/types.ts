@@ -21,6 +21,7 @@ export type Database = {
           deal_id: string | null
           description: string | null
           id: string
+          is_demo: boolean
           title: string
           type: Database["public"]["Enums"]["activity_type"]
           user_id: string
@@ -31,6 +32,7 @@ export type Database = {
           deal_id?: string | null
           description?: string | null
           id?: string
+          is_demo?: boolean
           title: string
           type: Database["public"]["Enums"]["activity_type"]
           user_id: string
@@ -41,6 +43,7 @@ export type Database = {
           deal_id?: string | null
           description?: string | null
           id?: string
+          is_demo?: boolean
           title?: string
           type?: Database["public"]["Enums"]["activity_type"]
           user_id?: string
@@ -68,6 +71,7 @@ export type Database = {
           created_by: string
           id: string
           industry: string | null
+          is_demo: boolean
           name: string
           updated_at: string
           website: string | null
@@ -77,6 +81,7 @@ export type Database = {
           created_by: string
           id?: string
           industry?: string | null
+          is_demo?: boolean
           name: string
           updated_at?: string
           website?: string | null
@@ -86,6 +91,7 @@ export type Database = {
           created_by?: string
           id?: string
           industry?: string | null
+          is_demo?: boolean
           name?: string
           updated_at?: string
           website?: string | null
@@ -100,6 +106,7 @@ export type Database = {
           email: string | null
           first_name: string
           id: string
+          is_demo: boolean
           last_name: string
           phone: string | null
           position: string | null
@@ -113,6 +120,7 @@ export type Database = {
           email?: string | null
           first_name: string
           id?: string
+          is_demo?: boolean
           last_name: string
           phone?: string | null
           position?: string | null
@@ -126,6 +134,7 @@ export type Database = {
           email?: string | null
           first_name?: string
           id?: string
+          is_demo?: boolean
           last_name?: string
           phone?: string | null
           position?: string | null
@@ -150,6 +159,7 @@ export type Database = {
           created_at: string
           created_by: string
           id: string
+          is_demo: boolean
           notes: string | null
           owner_id: string
           pipeline_id: string
@@ -166,6 +176,7 @@ export type Database = {
           created_at?: string
           created_by: string
           id?: string
+          is_demo?: boolean
           notes?: string | null
           owner_id: string
           pipeline_id: string
@@ -182,6 +193,7 @@ export type Database = {
           created_at?: string
           created_by?: string
           id?: string
+          is_demo?: boolean
           notes?: string | null
           owner_id?: string
           pipeline_id?: string
@@ -397,6 +409,7 @@ export type Database = {
           description: string | null
           due_date: string | null
           id: string
+          is_demo: boolean
           priority: string
           title: string
           updated_at: string
@@ -410,6 +423,7 @@ export type Database = {
           description?: string | null
           due_date?: string | null
           id?: string
+          is_demo?: boolean
           priority?: string
           title: string
           updated_at?: string
@@ -423,6 +437,7 @@ export type Database = {
           description?: string | null
           due_date?: string | null
           id?: string
+          is_demo?: boolean
           priority?: string
           title?: string
           updated_at?: string

@@ -5,6 +5,7 @@ import { TeamSettings } from "@/components/settings/TeamSettings";
 import { NotificationSettings } from "@/components/settings/NotificationSettings";
 import { EmailTemplateSettings } from "@/components/settings/EmailTemplateSettings";
 import { ConnectorSettings } from "@/components/settings/ConnectorSettings";
+import { DemoDataSettings } from "@/components/settings/DemoDataSettings";
 
 export default function Settings() {
   return (
@@ -22,6 +23,7 @@ export default function Settings() {
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
           <TabsTrigger value="templates">Email Templates</TabsTrigger>
           <TabsTrigger value="connectors">Connectors</TabsTrigger>
+          <TabsTrigger value="demo">Demo Data</TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile"><ProfileSettings /></TabsContent>
@@ -30,6 +32,7 @@ export default function Settings() {
         <TabsContent value="notifications"><NotificationSettings /></TabsContent>
         <TabsContent value="templates"><EmailTemplateSettings /></TabsContent>
         <TabsContent value="connectors"><ConnectorSettings /></TabsContent>
+        <TabsContent value="demo"><DemoDataSettings /></TabsContent>
       </Tabs>
     </div>
   );

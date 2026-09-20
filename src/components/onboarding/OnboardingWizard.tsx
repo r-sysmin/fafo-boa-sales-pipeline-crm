@@ -7,7 +7,9 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, ArrowRight, ArrowLeft, Building2, Users, Kanban, Check, Plus, X } from "lucide-react";
+import { Loader2, ArrowRight, ArrowLeft, Building2, Users, Kanban, Check, Plus, X, Sparkles } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { seedDemoWorkspace } from "@/lib/demoData";
 
 interface OnboardingWizardProps {
   onComplete: () => void;
@@ -30,6 +32,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
   const [teamSize, setTeamSize] = useState("");
   const [stages, setStages] = useState(defaultStages);
   const [newStageName, setNewStageName] = useState("");
+  const [loadDemo, setLoadDemo] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   const teamSizes = ["Just me", "2-5", "6-15", "16-50", "50+"];
@@ -75,10 +78,28 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
         position: i,
       }));
 
-      const { error: stagesError } = await supabase.from("pipeline_stages").insert(stageInserts);
+      const { data: createdStages, error: stagesError } = await supabase
+        .from("pipeline_stages")
+        .insert(stageInserts)
+        .select("id, name, position");
       if (stagesError) throw stagesError;
 
-      toast({ title: "You're all set! 🎉", description: "Your pipeline is ready to go." });
+      if (loadDemo && createdStages?.length) {
+        try {
+          await seedDemoWorkspace(user.id, pipeline.id, createdStages);
+        } catch (demoErr: any) {
+          toast({
+            title: "Demo data couldn't be added",
+            description: "Your pipeline was created. You can load the demo workspace later from Settings.",
+            variant: "destructive",
+          });
+        }
+      }
+
+      toast({
+        title: "You're all set! 🎉",
+        description: loadDemo ? "Your pipeline is ready, with sample data to explore." : "Your pipeline is ready to go.",
+      });
       onComplete();
     } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
@@ -189,6 +210,18 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                 <Button variant="outline" size="icon" onClick={handleAddStage}>
                   <Plus className="h-4 w-4" />
                 </Button>
+              </div>
+
+              <div className="flex items-start gap-3 rounded-xl border bg-muted/40 p-4">
+                <Sparkles className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium">Start with sample data</p>
+                  <p className="text-xs text-muted-foreground">
+                    Adds example companies, contacts and deals so you can explore right away. You can remove it any time
+                    from Settings.
+                  </p>
+                </div>
+                <Switch checked={loadDemo} onCheckedChange={setLoadDemo} aria-label="Start with sample data" />
               </div>
             </div>
           )}
