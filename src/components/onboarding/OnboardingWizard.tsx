@@ -75,10 +75,28 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
         position: i,
       }));
 
-      const { error: stagesError } = await supabase.from("pipeline_stages").insert(stageInserts);
+      const { data: createdStages, error: stagesError } = await supabase
+        .from("pipeline_stages")
+        .insert(stageInserts)
+        .select("id, name, position");
       if (stagesError) throw stagesError;
 
-      toast({ title: "You're all set! 🎉", description: "Your pipeline is ready to go." });
+      if (loadDemo && createdStages?.length) {
+        try {
+          await seedDemoWorkspace(user.id, pipeline.id, createdStages);
+        } catch (demoErr: any) {
+          toast({
+            title: "Demo data couldn't be added",
+            description: "Your pipeline was created. You can load the demo workspace later from Settings.",
+            variant: "destructive",
+          });
+        }
+      }
+
+      toast({
+        title: "You're all set! 🎉",
+        description: loadDemo ? "Your pipeline is ready, with sample data to explore." : "Your pipeline is ready to go.",
+      });
       onComplete();
     } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
