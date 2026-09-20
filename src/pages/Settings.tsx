@@ -32,6 +32,7 @@ export default function Settings() {
         <TabsContent value="notifications"><NotificationSettings /></TabsContent>
         <TabsContent value="templates"><EmailTemplateSettings /></TabsContent>
         <TabsContent value="connectors"><ConnectorSettings /></TabsContent>
+        <TabsContent value="demo"><DemoDataSettings /></TabsContent>
       </Tabs>
     </div>
   );
