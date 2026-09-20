@@ -1,0 +1,378 @@
+{
+  "version": 1,
+  "sdk_version": "3.0.1",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://drwzefybkwrjovuqmjql.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "fafo-boa-sales-pipeline-crm",
+      "version": "0.1.0",
+      "title": "FAFO-BOA Sales Pipeline CRM"
+    },
+    "tools": [
+      {
+        "name": "list_pipelines",
+        "title": "List pipelines",
+        "description": "List the caller's sales pipelines with their stages in order.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": null,
+        "outputSchema": null
+      },
+      {
+        "name": "list_deals",
+        "title": "List deals",
+        "description": "List the caller's deals, optionally filtered by pipeline or stage.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "pipeline_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Only deals in this pipeline."
+            },
+            "stage_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Only deals in this stage."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50,
+              "description": "Maximum deals to return."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "create_deal",
+        "title": "Create deal",
+        "description": "Create a new deal in one of the caller's pipeline stages.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "description": "Deal title."
+            },
+            "pipeline_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Pipeline the deal belongs to."
+            },
+            "stage_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Stage within that pipeline."
+            },
+            "value": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Deal value in the account currency."
+            },
+            "probability": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "Win probability percentage."
+            },
+            "close_date": {
+              "type": "string",
+              "format": "date",
+              "description": "Expected close date (YYYY-MM-DD)."
+            },
+            "company_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Related company."
+            },
+            "contact_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Primary contact."
+            },
+            "notes": {
+              "type": "string",
+              "maxLength": 2000,
+              "description": "Free-form notes."
+            }
+          },
+          "required": [
+            "title",
+            "pipeline_id",
+            "stage_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "update_deal",
+        "title": "Update deal",
+        "description": "Update a deal's stage, value, probability, close date, or notes.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "deal_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Deal to update."
+            },
+            "stage_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Move the deal to this stage."
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "value": {
+              "type": "number",
+              "minimum": 0
+            },
+            "probability": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "close_date": {
+              "type": "string",
+              "format": "date"
+            },
+            "notes": {
+              "type": "string",
+              "maxLength": 2000
+            }
+          },
+          "required": [
+            "deal_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_contacts",
+        "title": "List contacts",
+        "description": "List or search the caller's contacts by name or email.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "search": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "description": "Match against first name, last name, or email."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50,
+              "description": "Maximum contacts to return."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "create_contact",
+        "title": "Create contact",
+        "description": "Add a new contact to the caller's CRM.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "first_name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "last_name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "maxLength": 255
+            },
+            "phone": {
+              "type": "string",
+              "maxLength": 50
+            },
+            "position": {
+              "type": "string",
+              "maxLength": 120
+            },
+            "company_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Company this contact works for."
+            }
+          },
+          "required": [
+            "first_name",
+            "last_name"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_companies",
+        "title": "List companies",
+        "description": "List or search the caller's companies by name.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "search": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "description": "Match against the company name."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "create_task",
+        "title": "Create task",
+        "description": "Create a follow-up task for the caller, optionally linked to a deal or contact.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 2000
+            },
+            "due_date": {
+              "type": "string",
+              "format": "date",
+              "description": "Due date (YYYY-MM-DD)."
+            },
+            "priority": {
+              "type": "string",
+              "enum": [
+                "low",
+                "medium",
+                "high"
+              ],
+              "default": "medium"
+            },
+            "deal_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "contact_id": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "title"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "pipeline_summary",
+        "title": "Pipeline summary",
+        "description": "Summarize deal count and total value per stage for a pipeline.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "pipeline_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Pipeline to summarize; defaults to the first pipeline."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

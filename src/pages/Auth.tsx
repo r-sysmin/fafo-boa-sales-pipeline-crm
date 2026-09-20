@@ -1,5 +1,5 @@
 import { useState, createContext, useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -29,6 +29,10 @@ type AuthStyle = "mint" | "dark" | "photo";
 
 export default function Auth() {
   const { session, loading } = useAuth();
+  const [searchParams] = useSearchParams();
+  const rawNext = searchParams.get("next");
+  const nextPath = rawNext && /^\/[^/\\]/.test(rawNext) ? rawNext : null;
+  const returnUrl = nextPath ? window.location.origin + nextPath : window.location.origin;
   
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
@@ -47,7 +51,7 @@ export default function Auth() {
     );
   }
 
-  if (session) return <Navigate to="/dashboard" replace />;
+  if (session) return <Navigate to={nextPath ?? "/dashboard"} replace />;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,7 +78,7 @@ export default function Auth() {
           password: data.password,
           options: {
             data: { full_name: data.fullName },
-            emailRedirectTo: window.location.origin,
+            emailRedirectTo: returnUrl,
           },
         });
         if (error) throw error;
@@ -238,7 +242,7 @@ export default function Auth() {
             className="w-full"
             onClick={async () => {
               const { error } = await lovable.auth.signInWithOAuth("google", {
-                redirect_uri: window.location.origin,
+                redirect_uri: returnUrl,
               });
               if (error) {
                 toast({ title: "Error", description: String(error), variant: "destructive" });
